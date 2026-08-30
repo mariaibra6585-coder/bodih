@@ -1,0 +1,3258 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#03040b">
+<title>NOVA — Beyond The Interface</title>
+
+<style>
+*{box-sizing:border-box}
+
+:root{
+  --cyan:#38eaff;
+  --purple:#805cff;
+  --pink:#ff3fd4;
+  --green:#61ffad;
+  --bg:#02030a;
+  --panel:rgba(8,11,28,.66);
+  --border:rgba(255,255,255,.12);
+  --text:#f5f7ff;
+  --muted:#8b93b5;
+}
+
+html,body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+body{
+  overflow-x:hidden;
+}
+
+button,
+textarea,
+input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+canvas{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+}
+
+/* =========================
+   SPACE
+========================= */
+
+#space{
+  z-index:0;
+}
+
+#stars{
+  z-index:1;
+}
+
+.background-glow{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(128,92,255,.18),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 80% 35%,
+      rgba(56,234,255,.12),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(255,63,212,.08),
+      transparent 35%
+    ),
+    #02030a;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header{
+  position:fixed;
+  top:16px;
+  left:16px;
+  right:16px;
+  z-index:50;
+
+  height:66px;
+  padding:8px 12px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  border:1px solid var(--border);
+  border-radius:22px;
+
+  background:rgba(4,6,17,.62);
+
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+
+  box-shadow:
+    0 20px 80px rgba(0,0,0,.35);
+}
+
+.logo-area{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo{
+  width:44px;
+  height:44px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:15px;
+
+  font-weight:1000;
+  font-size:19px;
+
+  background:
+    conic-gradient(
+      from 0deg,
+      var(--cyan),
+      var(--purple),
+      var(--pink),
+      var(--cyan)
+    );
+
+  box-shadow:
+    0 0 20px rgba(56,234,255,.35);
+
+  animation:logoSpin 8s linear infinite;
+}
+
+@keyframes logoSpin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+.brand-title{
+  font-weight:1000;
+  letter-spacing:.22em;
+}
+
+.brand-sub{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  letter-spacing:.22em;
+  margin-top:3px;
+}
+
+.header-actions{
+  display:flex;
+  gap:7px;
+}
+
+.icon-btn{
+  width:43px;
+  height:43px;
+
+  border:1px solid var(--border);
+  border-radius:14px;
+
+  color:white;
+  background:rgba(255,255,255,.045);
+
+  transition:.25s;
+}
+
+.icon-btn:hover{
+  transform:translateY(-2px);
+  background:rgba(255,255,255,.11);
+  box-shadow:
+    0 0 25px rgba(56,234,255,.15);
+}
+
+/* =========================
+   HUD
+========================= */
+
+#hud{
+  position:fixed;
+  top:100px;
+  right:22px;
+  z-index:20;
+
+  width:285px;
+  padding:18px;
+
+  border:1px solid var(--border);
+  border-radius:22px;
+
+  background:var(--panel);
+
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+}
+
+.online{
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  font-size:11px;
+  color:#aab1cf;
+}
+
+.online-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 14px var(--green);
+}
+
+#hud h3{
+  margin:14px 0 5px;
+}
+
+#hud p{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.8;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:15px;
+}
+
+.stat{
+  padding:11px;
+
+  border:1px solid var(--border);
+  border-radius:14px;
+
+  background:rgba(255,255,255,.035);
+}
+
+.stat small{
+  color:#6f7798;
+}
+
+.stat strong{
+  display:block;
+  margin-top:4px;
+}
+
+/* =========================
+   NOVA CHARACTER
+========================= */
+
+#nova{
+  position:fixed;
+  z-index:8;
+
+  left:50%;
+  top:47%;
+
+  width:300px;
+  height:410px;
+
+  transform:
+    translate(-50%,-50%);
+
+  pointer-events:none;
+  transition:transform .2s ease-out;
+}
+
+.aura{
+  position:absolute;
+
+  left:50%;
+  top:48%;
+
+  width:270px;
+  height:270px;
+
+  transform:translate(-50%,-50%);
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(56,234,255,.25),
+      rgba(128,92,255,.13) 35%,
+      transparent 70%
+    );
+
+  filter:blur(12px);
+
+  animation:breathe 4s ease-in-out infinite;
+}
+
+@keyframes breathe{
+  50%{
+    transform:
+      translate(-50%,-50%)
+      scale(1.18);
+  }
+}
+
+.character{
+  position:absolute;
+
+  left:50%;
+  top:48%;
+
+  width:125px;
+  height:220px;
+
+  transform:translate(-50%,-50%);
+}
+
+.head{
+  position:absolute;
+
+  left:50%;
+  top:0;
+
+  width:88px;
+  height:108px;
+
+  transform:translateX(-50%);
+
+  border-radius:
+    48% 48% 45% 45%;
+
+  border:
+    1px solid rgba(95,239,255,.7);
+
+  background:
+    radial-gradient(
+      circle at 50% 30%,
+      rgba(255,255,255,.15),
+      transparent 20%
+    ),
+    linear-gradient(
+      150deg,
+      rgba(56,234,255,.18),
+      rgba(128,92,255,.20)
+    );
+
+  box-shadow:
+    inset 0 0 30px rgba(56,234,255,.18),
+    0 0 45px rgba(56,234,255,.25);
+}
+
+.head:before,
+.head:after{
+  content:"";
+
+  position:absolute;
+  top:48px;
+
+  width:22px;
+  height:4px;
+
+  border-radius:20px;
+
+  background:#77f8ff;
+
+  box-shadow:
+    0 0 15px #77f8ff;
+}
+
+.head:before{
+  left:17px;
+}
+
+.head:after{
+  right:17px;
+}
+
+.neck{
+  position:absolute;
+
+  left:50%;
+  top:101px;
+
+  width:25px;
+  height:22px;
+
+  transform:translateX(-50%);
+
+  background:
+    linear-gradient(
+      var(--cyan),
+      var(--purple)
+    );
+}
+
+.body{
+  position:absolute;
+
+  left:50%;
+  top:116px;
+
+  width:105px;
+  height:100px;
+
+  transform:translateX(-50%);
+
+  clip-path:
+    polygon(
+      22% 0,
+      78% 0,
+      100% 100%,
+      0 100%
+    );
+
+  border:1px solid rgba(56,234,255,.55);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(56,234,255,.18),
+      rgba(128,92,255,.16),
+      rgba(255,63,212,.08)
+    );
+
+  box-shadow:
+    0 0 45px rgba(128,92,255,.2);
+}
+
+.core{
+  position:absolute;
+
+  left:50%;
+  top:146px;
+
+  width:21px;
+  height:21px;
+
+  transform:translateX(-50%);
+
+  border-radius:50%;
+
+  background:white;
+
+  box-shadow:
+    0 0 12px white,
+    0 0 35px var(--cyan),
+    0 0 65px var(--purple);
+
+  animation:corePulse 1.4s infinite alternate;
+}
+
+@keyframes corePulse{
+  to{
+    transform:
+      translateX(-50%)
+      scale(1.45);
+  }
+}
+
+.arm{
+  position:absolute;
+
+  top:124px;
+
+  width:15px;
+  height:105px;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      var(--cyan),
+      var(--purple),
+      transparent
+    );
+}
+
+.arm.left{
+  left:-6px;
+  transform:rotate(10deg);
+}
+
+.arm.right{
+  right:-6px;
+  transform:rotate(-10deg);
+}
+
+/* =========================
+   SPEECH
+========================= */
+
+#speech{
+  position:fixed;
+
+  left:50%;
+  bottom:128px;
+
+  transform:translateX(-50%);
+
+  z-index:25;
+
+  width:min(650px,calc(100% - 30px));
+
+  padding:15px 20px;
+
+  border:1px solid var(--border);
+  border-radius:19px;
+
+  background:
+    rgba(6,9,24,.7);
+
+  backdrop-filter:blur(20px);
+
+  text-align:center;
+
+  color:#e4e8ff;
+
+  opacity:0;
+
+  transition:.35s;
+}
+
+#speech.show{
+  opacity:1;
+}
+
+/* =========================
+   BOTTOM CONTROLS
+========================= */
+
+#bottom{
+  position:fixed;
+
+  left:50%;
+  bottom:23px;
+
+  transform:translateX(-50%);
+
+  z-index:30;
+
+  display:flex;
+  gap:9px;
+}
+
+.action{
+  padding:13px 18px;
+
+  border:1px solid var(--border);
+  border-radius:16px;
+
+  color:white;
+
+  background:
+    rgba(255,255,255,.055);
+
+  transition:.25s;
+}
+
+.action:hover{
+  transform:translateY(-2px);
+}
+
+.primary{
+  border:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--purple),
+      var(--pink)
+    );
+
+  box-shadow:
+    0 12px 35px rgba(128,92,255,.3);
+}
+
+/* =========================
+   CHAT WINDOW
+========================= */
+
+#chat{
+  position:fixed;
+  z-index:70;
+
+  left:50%;
+  top:50%;
+
+  width:min(760px,94vw);
+  height:min(720px,88vh);
+
+  transform:
+    translate(-50%,-50%)
+    scale(.95);
+
+  display:none;
+
+  flex-direction:column;
+
+  border:1px solid var(--border);
+  border-radius:28px;
+
+  background:
+    rgba(5,7,19,.88);
+
+  backdrop-filter:blur(30px);
+
+  box-shadow:
+    0 40px 120px rgba(0,0,0,.6);
+}
+
+#chat.open{
+  display:flex;
+  animation:chatOpen .3s ease forwards;
+}
+
+@keyframes chatOpen{
+  to{
+    transform:
+      translate(-50%,-50%)
+      scale(1);
+  }
+}
+
+.chat-header{
+  padding:18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  border-bottom:1px solid var(--border);
+}
+
+.chat-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.chat-orb{
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+
+  border-radius:50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--cyan),
+      var(--purple)
+    );
+}
+
+.close{
+  width:38px;
+  height:38px;
+
+  border:1px solid var(--border);
+  border-radius:12px;
+
+  color:white;
+  background:rgba(255,255,255,.05);
+}
+
+.messages{
+  flex:1;
+
+  overflow-y:auto;
+
+  padding:18px;
+}
+
+.message{
+  display:flex;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.message.user{
+  flex-direction:row-reverse;
+}
+
+.avatar{
+  width:34px;
+  height:34px;
+
+  flex-shrink:0;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:11px;
+
+  font-weight:900;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--cyan),
+      var(--purple)
+    );
+}
+
+.message.user .avatar{
+  background:
+    linear-gradient(
+      135deg,
+      var(--purple),
+      var(--pink)
+    );
+}
+
+.bubble{
+  max-width:75%;
+
+  padding:12px 15px;
+
+  border:1px solid var(--border);
+  border-radius:17px;
+
+  background:
+    rgba(255,255,255,.04);
+
+  line-height:1.8;
+
+  white-space:pre-wrap;
+}
+
+.message.user .bubble{
+  background:
+    rgba(128,92,255,.18);
+}
+
+.chat-input{
+  padding:14px;
+
+  border-top:1px solid var(--border);
+}
+
+#chatForm{
+  display:flex;
+  gap:9px;
+}
+
+#messageInput{
+  flex:1;
+
+  min-height:50px;
+  max-height:140px;
+
+  resize:none;
+
+  outline:none;
+
+  padding:14px;
+
+  color:white;
+
+  border:1px solid var(--border);
+  border-radius:16px;
+
+  background:
+    rgba(0,0,0,.25);
+}
+
+#messageInput:focus{
+  border-color:
+    rgba(56,234,255,.5);
+}
+
+#send{
+  width:55px;
+
+  border:0;
+  border-radius:16px;
+
+  color:white;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--purple),
+      var(--pink)
+    );
+}
+
+.quick{
+  display:flex;
+  gap:7px;
+
+  overflow-x:auto;
+
+  margin-top:8px;
+}
+
+.quick button{
+  white-space:nowrap;
+
+  padding:8px 11px;
+
+  border:1px solid var(--border);
+  border-radius:12px;
+
+  color:var(--muted);
+
+  background:
+    rgba(255,255,255,.04);
+}
+
+/* =========================
+   COMMAND CENTER
+========================= */
+
+.overlay{
+  position:fixed;
+  inset:0;
+
+  z-index:80;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  padding:20px;
+
+  background:
+    rgba(0,0,0,.65);
+
+  backdrop-filter:blur(14px);
+}
+
+.overlay.open{
+  display:flex;
+}
+
+.command-box{
+  width:min(650px,95vw);
+
+  padding:20px;
+
+  border:1px solid var(--border);
+  border-radius:25px;
+
+  background:
+    rgba(7,9,24,.88);
+}
+
+.command-box input{
+  width:100%;
+
+  padding:15px;
+
+  outline:none;
+
+  border:1px solid var(--border);
+  border-radius:15px;
+
+  color:white;
+
+  background:
+    rgba(0,0,0,.3);
+}
+
+.commands{
+  display:grid;
+  gap:8px;
+  margin-top:12px;
+}
+
+.command{
+  padding:13px;
+
+  border:1px solid var(--border);
+  border-radius:14px;
+
+  background:
+    rgba(255,255,255,.035);
+
+  cursor:pointer;
+}
+
+.command:hover{
+  background:
+    rgba(255,255,255,.09);
+}
+
+/* =========================
+   MAP
+========================= */
+
+.map-box{
+  position:relative;
+
+  width:min(900px,94vw);
+  height:min(650px,84vh);
+
+  overflow:hidden;
+
+  border:1px solid var(--border);
+  border-radius:27px;
+
+  background:
+    rgba(4,6,19,.9);
+}
+
+#mapCanvas{
+  position:absolute;
+  inset:0;
+
+  width:100%;
+  height:100%;
+}
+
+.map-title{
+  position:absolute;
+
+  top:18px;
+  right:22px;
+
+  z-index:2;
+}
+
+.map-title small{
+  color:var(--muted);
+}
+
+/* =========================
+   FLASH
+========================= */
+
+#flash{
+  position:fixed;
+  inset:0;
+
+  z-index:100;
+
+  pointer-events:none;
+
+  background:white;
+
+  opacity:0;
+}
+
+#flash.active{
+  animation:flash .5s;
+}
+
+@keyframes flash{
+  20%{
+    opacity:.14;
+  }
+
+  100%{
+    opacity:0;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px){
+
+  header{
+    top:8px;
+    left:8px;
+    right:8px;
+  }
+
+  .brand-sub{
+    display:none;
+  }
+
+  #hud{
+    top:88px;
+    right:10px;
+    width:220px;
+  }
+
+  #nova{
+    transform:
+      translate(-50%,-50%)
+      scale(.78);
+  }
+
+  #bottom{
+    width:calc(100% - 20px);
+    justify-content:center;
+  }
+
+  .action{
+    padding:12px;
+    font-size:12px;
+  }
+
+  #speech{
+    bottom:105px;
+  }
+
+  .bubble{
+    max-width:82%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background-glow"></div>
+
+<canvas id="space"></canvas>
+<canvas id="stars"></canvas>
+
+
+<!-- HEADER -->
+
+<header>
+
+  <div class="logo-area">
+
+    <div class="logo">
+      N
+    </div>
+
+    <div>
+      <div class="brand-title">
+        NOVA
+      </div>
+
+      <span class="brand-sub">
+        BEYOND THE INTERFACE
+      </span>
+    </div>
+
+  </div>
+
+
+  <div class="header-actions">
+
+    <button
+      class="icon-btn"
+      id="voiceButton"
+      title="الصوت"
+    >
+      🎙
+    </button>
+
+    <button
+      class="icon-btn"
+      id="soundButton"
+      title="المؤثرات"
+    >
+      ♫
+    </button>
+
+    <button
+      class="icon-btn"
+      id="mapButton"
+      title="الخريطة"
+    >
+      ⌁
+    </button>
+
+    <button
+      class="icon-btn"
+      id="chatButton"
+      title="المحادثة"
+    >
+      ◉
+    </button>
+
+    <button
+      class="icon-btn"
+      id="commandButton"
+      title="الأوامر"
+    >
+      ⌘
+    </button>
+
+  </div>
+
+</header>
+
+
+<!-- HUD -->
+
+<div id="hud">
+
+  <div class="online">
+
+    <span class="online-dot"></span>
+
+    <span id="systemStatus">
+      NOVA ONLINE
+    </span>
+
+  </div>
+
+  <h3>
+    مرحبًا، أنا NOVA
+  </h3>
+
+  <p id="hudText">
+    أنا مساحة رقمية تفاعلية.
+    حرّك المؤشر، تحدث معي، واستكشف العالم.
+  </p>
+
+
+  <div class="stats">
+
+    <div class="stat">
+      <small>الطاقة</small>
+      <strong id="energy">
+        87%
+      </strong>
+    </div>
+
+    <div class="stat">
+      <small>النبضات</small>
+      <strong id="pulses">
+        0
+      </strong>
+    </div>
+
+    <div class="stat">
+      <small>الزيارات</small>
+      <strong id="visits">
+        1
+      </strong>
+    </div>
+
+    <div class="stat">
+      <small>الوضع</small>
+      <strong id="mode">
+        COSMIC
+      </strong>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- NOVA -->
+
+<div id="nova">
+
+  <div class="aura"></div>
+
+  <div class="character">
+
+    <div class="head"></div>
+
+    <div class="neck"></div>
+
+    <div class="body"></div>
+
+    <div class="core"></div>
+
+    <div class="arm left"></div>
+
+    <div class="arm right"></div>
+
+  </div>
+
+</div>
+
+
+<!-- SPEECH -->
+
+<div id="speech">
+  مرحبًا. أنا NOVA.
+</div>
+
+
+<!-- BOTTOM -->
+
+<div id="bottom">
+
+  <button
+    class="action primary"
+    id="enterButton"
+  >
+    ✦ دخول إلى العالم
+  </button>
+
+  <button
+    class="action"
+    id="talkButton"
+  >
+    تحدث معي
+  </button>
+
+</div>
+
+
+<!-- CHAT -->
+
+<div id="chat">
+
+  <div class="chat-header">
+
+    <div class="chat-title">
+
+      <div class="chat-orb">
+        N
+      </div>
+
+      <div>
+        <strong>NOVA AI</strong>
+        <small style="display:block;color:#777f9e">
+          ذكاء اصطناعي
+        </small>
+      </div>
+
+    </div>
+
+    <button
+      class="close"
+      id="closeChat"
+    >
+      ✕
+    </button>
+
+  </div>
+
+
+  <div
+    class="messages"
+    id="messages"
+  >
+
+    <div class="message">
+
+      <div class="avatar">
+        N
+      </div>
+
+      <div class="bubble">
+        مرحبًا 👋
+        أنا NOVA.
+        اسألني أي شيء أو أخبرني بما تريد بناءه.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div
+    id="typing"
+    style="
+      padding:0 18px 5px;
+      color:#777f9e;
+      font-size:12px;
+      opacity:0;
+    "
+  >
+    NOVA تفكر...
+  </div>
+
+
+  <div class="chat-input">
+
+    <form id="chatForm">
+
+      <textarea
+        id="messageInput"
+        placeholder="اكتب رسالتك إلى NOVA..."
+        rows="1"
+      ></textarea>
+
+      <button id="send">
+        ➤
+      </button>
+
+    </form>
+
+
+    <div class="quick">
+
+      <button data-message="أعطني فكرة مشروع لم تحدث من قبل">
+        💡 فكرة
+      </button>
+
+      <button data-message="صمم لي موقعًا مستقبليًا">
+        🌌 تصميم
+      </button>
+
+      <button data-message="ساعدني في البرمجة">
+        💻 برمجة
+      </button>
+
+      <button data-message="أريد تحديًا صعبًا">
+        🔥 تحدي
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- COMMAND CENTER -->
+
+<div
+  class="overlay"
+  id="commandsOverlay"
+>
+
+  <div class="command-box">
+
+    <h2>
+      مركز أوامر NOVA
+    </h2>
+
+    <input
+      id="commandInput"
+      placeholder="اكتب أمرًا..."
+    >
+
+    <div class="commands">
+
+      <div
+        class="command"
+        data-command="chat"
+      >
+        ◉ افتح المحادثة
+      </div>
+
+      <div
+        class="command"
+        data-command="map"
+      >
+        ⌁ افتح الخريطة الكونية
+      </div>
+
+      <div
+        class="command"
+        data-command="pulse"
+      >
+        ⚡ أرسل نبضة طاقة
+      </div>
+
+      <div
+        class="command"
+        data-command="cinema"
+      >
+        🎬 الوضع السينمائي
+      </div>
+
+      <div
+        class="command"
+        data-command="voice"
+      >
+        🎙 تشغيل الميكروفون
+      </div>
+
+      <div
+        class="command"
+        data-command="speak"
+      >
+        🔊 اجعل NOVA تتحدث
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- MAP -->
+
+<div
+  class="overlay"
+  id="mapOverlay"
+>
+
+  <div class="map-box">
+
+    <canvas id="mapCanvas"></canvas>
+
+    <div class="map-title">
+
+      <h2>
+        خريطة NOVA
+      </h2>
+
+      <small>
+        شبكة الوعي الرقمي
+      </small>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div id="flash"></div>
+
+
+<script>
+/* =========================================================
+   NOVA STATE
+========================================================= */
+
+const state = {
+
+  pulses:
+    Number(
+      localStorage.getItem("nova_pulses") || 0
+    ),
+
+  visits:
+    Number(
+      localStorage.getItem("nova_visits") || 0
+    ) + 1,
+
+  sound:false,
+
+  cinema:false,
+
+  history:
+    JSON.parse(
+      localStorage.getItem("nova_history") || "[]"
+    )
+
+};
+
+localStorage.setItem(
+  "nova_visits",
+  state.visits
+);
+
+document.getElementById("pulses").textContent =
+  state.pulses;
+
+document.getElementById("visits").textContent =
+  state.visits;
+
+
+/* =========================================================
+   SPACE ENGINE
+========================================================= */
+
+const space =
+  document.getElementById("space");
+
+const ctx =
+  space.getContext("2d");
+
+const starsCanvas =
+  document.getElementById("stars");
+
+const starsCtx =
+  starsCanvas.getContext("2d");
+
+
+let W = innerWidth;
+let H = innerHeight;
+
+const DPR =
+  Math.min(devicePixelRatio || 1,2);
+
+
+function resizeCanvas(){
+
+  W = innerWidth;
+  H = innerHeight;
+
+  space.width =
+    W * DPR;
+
+  space.height =
+    H * DPR;
+
+  starsCanvas.width =
+    W * DPR;
+
+  starsCanvas.height =
+    H * DPR;
+
+  ctx.setTransform(
+    DPR,0,0,DPR,0,0
+  );
+
+  starsCtx.setTransform(
+    DPR,0,0,DPR,0,0
+  );
+
+}
+
+
+resizeCanvas();
+
+addEventListener(
+  "resize",
+  resizeCanvas
+);
+
+
+/* =========================================================
+   MOUSE
+========================================================= */
+
+const mouse = {
+
+  x:W/2,
+
+  y:H/2
+
+};
+
+
+addEventListener(
+  "pointermove",
+  e => {
+
+    mouse.x = e.clientX;
+
+    mouse.y = e.clientY;
+
+    const nx =
+      (mouse.x / W - .5);
+
+    const ny =
+      (mouse.y / H - .5);
+
+    document.getElementById(
+      "nova"
+    ).style.transform =
+      `
+      translate(
+        calc(-50% + ${nx*35}px),
+        calc(-50% + ${ny*25}px)
+      )
+      rotateY(${nx*7}deg)
+      rotateX(${-ny*5}deg)
+      `;
+
+  }
+);
+
+
+/* =========================================================
+   3D PARTICLES
+========================================================= */
+
+const particles = [];
+
+for(
+  let i=0;
+  i<260;
+  i++
+){
+
+  particles.push({
+
+    x:
+      (Math.random()-.5)*1200,
+
+    y:
+      (Math.random()-.5)*850,
+
+    z:
+      Math.random()*1100+50,
+
+    size:
+      Math.random()*1.8+.3,
+
+    speed:
+      Math.random()*.8+.2
+
+  });
+
+}
+
+
+function project(p){
+
+  const focal=650;
+
+  const scale =
+    focal /
+    (focal+p.z);
+
+  return {
+
+    x:
+      W/2+p.x*scale,
+
+    y:
+      H/2+p.y*scale,
+
+    scale
+
+  };
+
+}
+
+
+function drawSpace(){
+
+  ctx.clearRect(
+    0,
+    0,
+    W,
+    H
+  );
+
+
+  const gradient =
+    ctx.createRadialGradient(
+      W*.5,
+      H*.5,
+      20,
+      W*.5,
+      H*.5,
+      W*.75
+    );
+
+
+  gradient.addColorStop(
+    0,
+    "rgba(35,25,90,.36)"
+  );
+
+  gradient.addColorStop(
+    .45,
+    "rgba(7,8,30,.35)"
+  );
+
+  gradient.addColorStop(
+    1,
+    "rgba(0,0,0,.92)"
+  );
+
+
+  ctx.fillStyle =
+    gradient;
+
+  ctx.fillRect(
+    0,
+    0,
+    W,
+    H
+  );
+
+
+  for(const p of particles){
+
+    p.z -=
+      p.speed *
+      (state.cinema ? 5 : 3);
+
+
+    if(p.z < 10){
+
+      p.z=1100;
+
+      p.x =
+        (Math.random()-.5)*1200;
+
+      p.y =
+        (Math.random()-.5)*850;
+
+    }
+
+
+    const q =
+      project(p);
+
+
+    const dx =
+      mouse.x-q.x;
+
+    const dy =
+      mouse.y-q.y;
+
+    const distance =
+      Math.hypot(dx,dy);
+
+
+    if(distance < 190){
+
+      p.x +=
+        dx*.0007;
+
+      p.y +=
+        dy*.0007;
+
+    }
+
+
+    const alpha =
+      Math.min(
+        1,
+        (1100-p.z)/500
+      );
+
+
+    ctx.beginPath();
+
+    ctx.fillStyle =
+      `rgba(
+        75,
+        225,
+        255,
+        ${alpha*.8}
+      )`;
+
+
+    ctx.arc(
+      q.x,
+      q.y,
+      Math.max(
+        .4,
+        p.size*q.scale*2.2
+      ),
+      0,
+      Math.PI*2
+    );
+
+
+    ctx.fill();
+
+  }
+
+
+  requestAnimationFrame(
+    drawSpace
+  );
+
+}
+
+
+drawSpace();
+
+
+/* =========================================================
+   STAR FIELD
+========================================================= */
+
+const stars=[];
+
+for(
+  let i=0;
+  i<700;
+  i++
+){
+
+  stars.push({
+
+    x:
+      (Math.random()-.5)*2400,
+
+    y:
+      (Math.random()-.5)*1500,
+
+    depth:
+      Math.random()*2+.2,
+
+    size:
+      Math.random()*1.5+.2
+
+  });
+
+}
+
+
+function drawStars(){
+
+  starsCtx.clearRect(
+    0,
+    0,
+    W,
+    H
+  );
+
+
+  for(const s of stars){
+
+    const x =
+      W/2+
+      s.x*.55+
+      (mouse.x-W/2)*
+      s.depth*.009;
+
+
+    const y =
+      H/2+
+      s.y*.55+
+      (mouse.y-H/2)*
+      s.depth*.009;
+
+
+    if(
+      x<0 ||
+      x>W ||
+      y<0 ||
+      y>H
+    ) continue;
+
+
+    starsCtx.beginPath();
+
+    starsCtx.fillStyle =
+      `rgba(
+        190,
+        210,
+        255,
+        ${Math.min(1,s.depth/2)}
+      )`;
+
+
+    starsCtx.arc(
+      x,
+      y,
+      s.size,
+      0,
+      Math.PI*2
+    );
+
+
+    starsCtx.fill();
+
+  }
+
+
+  requestAnimationFrame(
+    drawStars
+  );
+
+}
+
+
+drawStars();
+
+
+/* =========================================================
+   AUDIO
+========================================================= */
+
+let audioContext=null;
+
+
+function initAudio(){
+
+  if(!audioContext){
+
+    audioContext =
+      new (
+        window.AudioContext ||
+        window.webkitAudioContext
+      )();
+
+  }
+
+}
+
+
+function tone(
+  frequency,
+  duration=.3,
+  type="sine",
+  volume=.05
+){
+
+  if(!state.sound)return;
+
+  initAudio();
+
+
+  const oscillator =
+    audioContext.createOscillator();
+
+  const gain =
+    audioContext.createGain();
+
+
+  oscillator.type =
+    type;
+
+  oscillator.frequency.value =
+    frequency;
+
+
+  gain.gain.setValueAtTime(
+    .0001,
+    audioContext.currentTime
+  );
+
+
+  gain.gain.exponentialRampToValueAtTime(
+    volume,
+    audioContext.currentTime+.03
+  );
+
+
+  gain.gain.exponentialRampToValueAtTime(
+    .0001,
+    audioContext.currentTime+duration
+  );
+
+
+  oscillator.connect(gain);
+
+  gain.connect(
+    audioContext.destination
+  );
+
+
+  oscillator.start();
+
+  oscillator.stop(
+    audioContext.currentTime+
+    duration
+  );
+
+}
+
+
+/* =========================================================
+   SPEECH
+========================================================= */
+
+let speechTimer;
+
+
+function showSpeech(text){
+
+  const box =
+    document.getElementById("speech");
+
+  box.textContent =
+    text;
+
+  box.classList.add("show");
+
+
+  clearTimeout(
+    speechTimer
+  );
+
+
+  speechTimer =
+    setTimeout(
+      () => {
+
+        box.classList.remove(
+          "show"
+        );
+
+      },
+      6000
+    );
+
+}
+
+
+function speak(text){
+
+  showSpeech(text);
+
+
+  if(
+    "speechSynthesis"
+    in window
+  ){
+
+    speechSynthesis.cancel();
+
+
+    const utterance =
+      new SpeechSynthesisUtterance(
+        text
+      );
+
+
+    utterance.lang =
+      "ar-SA";
+
+    utterance.rate =
+      .95;
+
+    utterance.pitch =
+      1.08;
+
+
+    speechSynthesis.speak(
+      utterance
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   PULSE
+========================================================= */
+
+function pulse(){
+
+  state.pulses++;
+
+
+  localStorage.setItem(
+    "nova_pulses",
+    state.pulses
+  );
+
+
+  document.getElementById(
+    "pulses"
+  ).textContent =
+    state.pulses;
+
+
+  document.getElementById(
+    "energy"
+  ).textContent =
+    Math.min(
+      99,
+      87+(state.pulses%13)
+    )+"%";
+
+
+  const flash =
+    document.getElementById(
+      "flash"
+    );
+
+
+  flash.classList.remove(
+    "active"
+  );
+
+
+  void flash.offsetWidth;
+
+
+  flash.classList.add(
+    "active"
+  );
+
+
+  tone(
+    420,
+    .2,
+    "sine",
+    .08
+  );
+
+
+  setTimeout(
+    () => tone(
+      840,
+      .4,
+      "triangle",
+      .05
+    ),
+    100
+  );
+
+
+  showSpeech(
+    "✦ نبضة NOVA وصلت إلى قلب الشبكة."
+  );
+
+}
+
+
+/* =========================================================
+   CINEMA
+========================================================= */
+
+function cinematic(){
+
+  state.cinema =
+    !state.cinema;
+
+
+  document.getElementById(
+    "mode"
+  ).textContent =
+    state.cinema
+      ? "CINEMA"
+      : "COSMIC";
+
+
+  if(state.cinema){
+
+    document.body.style.filter =
+      "contrast(1.12) saturate(1.3)";
+
+    showSpeech(
+      "تم تفعيل الوضع السينمائي."
+    );
+
+
+    tone(
+      55,
+      2,
+      "sine",
+      .08
+    );
+
+
+    setTimeout(
+      () => tone(
+        110,
+        1.5,
+        "triangle",
+        .04
+      ),
+      250
+    );
+
+
+  }else{
+
+    document.body.style.filter =
+      "none";
+
+    showSpeech(
+      "عاد العالم إلى الوضع الكوني."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   MAP
+========================================================= */
+
+const mapOverlay =
+  document.getElementById(
+    "mapOverlay"
+  );
+
+
+document.getElementById(
+  "mapButton"
+).onclick =
+  openMap;
+
+
+function openMap(){
+
+  mapOverlay.classList.add(
+    "open"
+  );
+
+  drawMap();
+
+}
+
+
+mapOverlay.addEventListener(
+  "click",
+  e => {
+
+    if(e.target === mapOverlay){
+
+      mapOverlay.classList.remove(
+        "open"
+      );
+
+    }
+
+  }
+);
+
+
+function drawMap(){
+
+  const canvas =
+    document.getElementById(
+      "mapCanvas"
+    );
+
+
+  const rect =
+    canvas.getBoundingClientRect();
+
+
+  const dpr =
+    Math.min(
+      devicePixelRatio || 1,
+      2
+    );
+
+
+  canvas.width =
+    rect.width*dpr;
+
+  canvas.height =
+    rect.height*dpr;
+
+
+  const c =
+    canvas.getContext("2d");
+
+
+  c.setTransform(
+    dpr,
+    0,
+    0,
+    dpr,
+    0,
+    0
+  );
+
+
+  c.clearRect(
+    0,
+    0,
+    rect.width,
+    rect.height
+  );
+
+
+  const nodes=[];
+
+
+  for(
+    let i=0;
+    i<18;
+    i++
+  ){
+
+    nodes.push({
+
+      x:
+        Math.random()*rect.width,
+
+      y:
+        Math.random()*rect.height
+
+    });
+
+  }
+
+
+  for(
+    let i=0;
+    i<nodes.length;
+    i++
+  ){
+
+    for(
+      let j=i+1;
+      j<nodes.length;
+      j++
+    ){
+
+      const a=nodes[i];
+      const b=nodes[j];
+
+
+      const distance =
+        Math.hypot(
+          a.x-b.x,
+          a.y-b.y
+        );
+
+
+      if(distance<220){
+
+        c.beginPath();
+
+        c.strokeStyle =
+          "rgba(56,234,255,.13)";
+
+        c.moveTo(
+          a.x,
+          a.y
+        );
+
+        c.lineTo(
+          b.x,
+          b.y
+        );
+
+        c.stroke();
+
+      }
+
+    }
+
+  }
+
+
+  for(const n of nodes){
+
+    c.beginPath();
+
+    c.fillStyle =
+      "#5defff";
+
+    c.shadowBlur =
+      20;
+
+    c.shadowColor =
+      "#38eaff";
+
+    c.arc(
+      n.x,
+      n.y,
+      4,
+      0,
+      Math.PI*2
+    );
+
+    c.fill();
+
+    c.shadowBlur=0;
+
+  }
+
+}
+
+
+/* =========================================================
+   CHAT
+========================================================= */
+
+const chat =
+  document.getElementById(
+    "chat"
+  );
+
+
+const messages =
+  document.getElementById(
+    "messages"
+  );
+
+
+const input =
+  document.getElementById(
+    "messageInput"
+  );
+
+
+const typing =
+  document.getElementById(
+    "typing"
+  );
+
+
+function openChat(){
+
+  chat.classList.add(
+    "open"
+  );
+
+  setTimeout(
+    () => input.focus(),
+    100
+  );
+
+}
+
+
+function closeChat(){
+
+  chat.classList.remove(
+    "open"
+  );
+
+}
+
+
+document.getElementById(
+  "chatButton"
+).onclick =
+  openChat;
+
+
+document.getElementById(
+  "closeChat"
+).onclick =
+  closeChat;
+
+
+document.getElementById(
+  "talkButton"
+).onclick =
+  openChat;
+
+
+document.getElementById(
+  "enterButton"
+).onclick =
+  () => {
+
+    pulse();
+
+    openChat();
+
+    speak(
+      "أهلًا بك في عالم NOVA."
+    );
+
+  };
+
+
+function addMessage(
+  text,
+  type
+){
+
+  const wrapper =
+    document.createElement(
+      "div"
+    );
+
+  wrapper.className =
+    `message ${type}`;
+
+
+  const avatar =
+    document.createElement(
+      "div"
+    );
+
+  avatar.className =
+    "avatar";
+
+  avatar.textContent =
+    type === "user"
+      ? "U"
+      : "N";
+
+
+  const bubble =
+    document.createElement(
+      "div"
+    );
+
+  bubble.className =
+    "bubble";
+
+  bubble.textContent =
+    text;
+
+
+  wrapper.appendChild(
+    avatar
+  );
+
+  wrapper.appendChild(
+    bubble
+  );
+
+
+  messages.appendChild(
+    wrapper
+  );
+
+
+  messages.scrollTop =
+    messages.scrollHeight;
+
+}
+
+
+function localNova(message){
+
+  const text =
+    message.toLowerCase();
+
+
+  if(
+    text.includes("مرحبا") ||
+    text.includes("سلام")
+  ){
+
+    return `
+مرحبًا بك 👋
+
+أنا NOVA.
+جاهزة لاستكشاف أفكارك وبناء شيء مختلف معك.
+`;
+
+  }
+
+
+  if(
+    text.includes("فكرة") ||
+    text.includes("مشروع")
+  ){
+
+    return `
+لدي فكرة لك:
+
+"العالم الحي"
+
+موقع يتغير حسب طريقة تفاعل الزائر معه.
+كل حركة، صوت، قرار أو زيارة تؤثر في عالم الموقع نفسه.
+
+يمكن أن يكون لكل زائر بصمته الخاصة، وتتحول الصفحة مع الوقت إلى عالم مختلف لكل شخص.
+
+هذه ليست مجرد صفحة ويب...
+بل تجربة تتذكر أنك زرتها.
+`;
+
+  }
+
+
+  if(
+    text.includes("برمجة") ||
+    text.includes("كود")
+  ){
+
+    return `
+أستطيع مساعدتك في البرمجة خطوة بخطوة.
+
+أخبرني:
+1. ماذا تريد أن تبني؟
+2. ما اللغة التي تريد استخدامها؟
+3. هل المشروع للويب أم تطبيق أم لعبة؟
+
+وسأساعدك في تحويل الفكرة إلى مشروع حقيقي.
+`;
+
+  }
+
+
+  if(
+    text.includes("من أنت") ||
+    text.includes("من انتي")
+  ){
+
+    return `
+أنا NOVA.
+
+واجهة ذكاء اصطناعي مستقبلية صُممت لأتفاعل معك، لا لأكون مجرد صفحة ثابتة.
+
+هذه النسخة تعمل محليًا.
+وعند ربطها بـ Backend وOpenAI يمكن تحويل المحادثة إلى ذكاء اصطناعي حقيقي.
+`;
+
+  }
+
+
+  if(
+    text.includes("تحدي")
+  ){
+
+    return `
+تحديك:
+
+ابنِ موقعًا يستطيع أن يتغير تصميمه بالكامل اعتمادًا على شخصية الزائر.
+
+لكن هناك شرط واحد:
+
+لا تستخدم أي قالب جاهز.
+
+إذا قبلت التحدي، اكتب:
+"ابدأ التحدي"
+`;
+
+  }
+
+
+  return `
+فهمت رسالتك:
+
+"${message}"
+
+أنا حاليًا في وضع NOVA المحلي، لذلك أستطيع محاكاة المحادثة.
+
+لتحويل هذه الواجهة إلى ذكاء اصطناعي حقيقي، اربطها بالمسار /api/chat من Backend آمن.
+`;
+
+}
+
+
+async function sendMessage(text){
+
+  text =
+    text.trim();
+
+  if(!text)return;
+
+
+  addMessage(
+    text,
+    "user"
+  );
+
+
+  state.history.push({
+
+    role:"user",
+
+    content:text
+
+  });
+
+
+  localStorage.setItem(
+    "nova_history",
+    JSON.stringify(
+      state.history.slice(-20)
+    )
+  );
+
+
+  typing.style.opacity =
+    "1";
+
+
+  try{
+
+    /*
+    ========================================================
+    OPENAI BACKEND
+
+    عند وجود Backend حقيقي:
+
+    const response = await fetch("/api/chat", {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        message:text,
+        history:state.history.slice(-12)
+      })
+    });
+
+    const data = await response.json();
+
+    const answer = data.answer;
+
+    ========================================================
+    */
+
+
+    /*
+    الوضع الحالي:
+    NOVA تعمل محليًا حتى تستطيع رؤية المشروع مباشرة.
+    */
+
+    await new Promise(
+      resolve =>
+        setTimeout(
+          resolve,
+          600+
+          Math.random()*700
+        )
+    );
+
+
+    const answer =
+      localNova(text);
+
+
+    addMessage(
+      answer,
+      "nova"
+    );
+
+
+    state.history.push({
+
+      role:"assistant",
+
+      content:answer
+
+    });
+
+
+    localStorage.setItem(
+      "nova_history",
+      JSON.stringify(
+        state.history.slice(-20)
+      )
+    );
+
+
+  }catch(error){
+
+    addMessage(
+      "حدث خطأ. حاول مرة أخرى.",
+      "nova"
+    );
+
+    console.error(error);
+
+  }finally{
+
+    typing.style.opacity =
+      "0";
+
+  }
+
+}
+
+
+document.getElementById(
+  "chatForm"
+).addEventListener(
+  "submit",
+  e => {
+
+    e.preventDefault();
+
+    const text =
+      input.value;
+
+    input.value="";
+
+    sendMessage(
+      text
+    );
+
+  }
+);
+
+
+input.addEventListener(
+  "keydown",
+  e => {
+
+    if(
+      e.key === "Enter" &&
+      !e.shiftKey
+    ){
+
+      e.preventDefault();
+
+      document.getElementById(
+        "chatForm"
+      ).requestSubmit();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   QUICK ACTIONS
+========================================================= */
+
+document
+.querySelectorAll(
+  ".quick button"
+)
+.forEach(
+  button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        sendMessage(
+          button.dataset.message
+        );
+
+      }
+    );
+
+  }
+);
+
+
+/* =========================================================
+   COMMAND CENTER
+========================================================= */
+
+const commandOverlay =
+  document.getElementById(
+    "commandsOverlay"
+  );
+
+
+document.getElementById(
+  "commandButton"
+).onclick =
+  () => {
+
+    commandOverlay.classList.add(
+      "open"
+    );
+
+    setTimeout(
+      () =>
+        document
+        .getElementById(
+          "commandInput"
+        )
+        .focus(),
+      100
+    );
+
+  };
+
+
+commandOverlay.addEventListener(
+  "click",
+  e => {
+
+    if(e.target === commandOverlay){
+
+      commandOverlay.classList.remove(
+        "open"
+      );
+
+    }
+
+  }
+);
+
+
+function runCommand(
+  command
+){
+
+  commandOverlay.classList.remove(
+    "open"
+  );
+
+
+  switch(command){
+
+    case "chat":
+
+      openChat();
+
+      break;
+
+
+    case "map":
+
+      openMap();
+
+      break;
+
+
+    case "pulse":
+
+      pulse();
+
+      break;
+
+
+    case "cinema":
+
+      cinematic();
+
+      break;
+
+
+    case "voice":
+
+      startVoice();
+
+      break;
+
+
+    case "speak":
+
+      speak(
+        "أنا NOVA. العالم أمامك، والأفكار بين يديك."
+      );
+
+      break;
+
+  }
+
+}
+
+
+document
+.querySelectorAll(
+  ".command"
+)
+.forEach(
+  item => {
+
+    item.addEventListener(
+      "click",
+      () => {
+
+        runCommand(
+          item.dataset.command
+        );
+
+      }
+    );
+
+  }
+);
+
+
+document.getElementById(
+  "commandInput"
+).addEventListener(
+  "keydown",
+  e => {
+
+    if(e.key !== "Enter")
+      return;
+
+
+    const text =
+      e.target.value
+      .toLowerCase();
+
+
+    e.target.value="";
+
+
+    if(
+      text.includes("خريطة")
+    ){
+
+      runCommand("map");
+
+    }
+
+    else if(
+      text.includes("محادثة") ||
+      text.includes("دردشة")
+    ){
+
+      runCommand("chat");
+
+    }
+
+    else if(
+      text.includes("نبضة") ||
+      text.includes("طاقة")
+    ){
+
+      runCommand("pulse");
+
+    }
+
+    else if(
+      text.includes("سينما") ||
+      text.includes("سينمائي")
+    ){
+
+      runCommand("cinema");
+
+    }
+
+    else if(
+      text.includes("صوت") ||
+      text.includes("ميكروفون")
+    ){
+
+      runCommand("voice");
+
+    }
+
+    else{
+
+      commandOverlay.classList.remove(
+        "open"
+      );
+
+      openChat();
+
+      sendMessage(
+        e.target.value
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   SOUND BUTTON
+========================================================= */
+
+document.getElementById(
+  "soundButton"
+).onclick =
+  () => {
+
+    state.sound =
+      !state.sound;
+
+
+    const button =
+      document.getElementById(
+        "soundButton"
+      );
+
+
+    button.textContent =
+      state.sound
+        ? "🔊"
+        : "♫";
+
+
+    if(state.sound){
+
+      initAudio();
+
+      tone(
+        520,
+        .35,
+        "sine",
+        .06
+      );
+
+      showSpeech(
+        "تم تشغيل النظام الصوتي."
+      );
+
+    }else{
+
+      showSpeech(
+        "تم إيقاف النظام الصوتي."
+      );
+
+    }
+
+  };
+
+
+/* =========================================================
+   VOICE RECOGNITION
+========================================================= */
+
+function startVoice(){
+
+  const Recognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+
+  if(!Recognition){
+
+    showSpeech(
+      "التعرف الصوتي غير مدعوم في هذا المتصفح."
+    );
+
+    return;
+
+  }
+
+
+  const recognition =
+    new Recognition();
+
+
+  recognition.lang =
+    "ar-SA";
+
+
+  recognition.interimResults =
+    false;
+
+
+  recognition.maxAlternatives =
+    1;
+
+
+  document.getElementById(
+    "systemStatus"
+  ).textContent =
+    "LISTENING...";
+
+
+  showSpeech(
+    "أنا أستمع إليك..."
+  );
+
+
+  try{
+
+    recognition.start();
+
+  }catch(error){
+
+    console.log(error);
+
+  }
+
+
+  recognition.onresult =
+    event => {
+
+      const text =
+        event
+        .results[0][0]
+        .transcript;
+
+
+      document.getElementById(
+        "systemStatus"
+      ).textContent =
+        "NOVA ONLINE";
+
+
+      openChat();
+
+      sendMessage(
+        text
+      );
+
+    };
+
+
+  recognition.onerror =
+    () => {
+
+      document.getElementById(
+        "systemStatus"
+      ).textContent =
+        "NOVA ONLINE";
+
+
+      showSpeech(
+        "لم أستطع سماع الأمر."
+      );
+
+    };
+
+
+  recognition.onend =
+    () => {
+
+      document.getElementById(
+        "systemStatus"
+      ).textContent =
+        "NOVA ONLINE";
+
+    };
+
+}
+
+
+document.getElementById(
+  "voiceButton"
+).onclick =
+  startVoice;
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+addEventListener(
+  "keydown",
+  e => {
+
+    if(
+      (e.ctrlKey || e.metaKey) &&
+      e.key.toLowerCase() === "k"
+    ){
+
+      e.preventDefault();
+
+      document.getElementById(
+        "commandButton"
+      ).click();
+
+    }
+
+
+    if(
+      e.key === "Escape"
+    ){
+
+      commandOverlay.classList.remove(
+        "open"
+      );
+
+      mapOverlay.classList.remove(
+        "open"
+      );
+
+      closeChat();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   BOOT
+========================================================= */
+
+setTimeout(
+  () => {
+
+    showSpeech(
+      "تم تشغيل NOVA. مرحبًا بك في عالمي."
+    );
+
+  },
+  1000
+);
+
+
+setTimeout(
+  () => {
+
+    document.getElementById(
+      "hudText"
+    ).textContent =
+      "النظام يراقب التفاعل. جرّب تحريك المؤشر أو التحدث معي.";
+
+  },
+  4000
+);
+
+</script>
+
+</body>
+</html>
